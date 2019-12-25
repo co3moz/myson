@@ -1,0 +1,21 @@
+{
+  "name": "myson",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "nole -L ./src/**/*.test.ts"
+  },
+  "keywords": [],
+  "author": "co3moz",
+  "license": "ISC",
+  "devDependencies": {
+    "nole": "^1.0.8",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "@types/node": "^12.12.21"
+  }
+}

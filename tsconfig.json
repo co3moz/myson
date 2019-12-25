@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "ES2018",
+    "module": "CommonJS",
+    "outDir": "build",
+    "declaration": true
+  }
+}
