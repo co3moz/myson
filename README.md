@@ -16,11 +16,18 @@ const text = MYSON.parse(binary); // "Hello, world!"
 
 ### Differences over json
 
-* Object types supported
+* Smaller
+* Slower
+* All features that json has already implemented
 * Decoding objects as tuples possible
 * Not designed to read by humans
 * Little bit more complicated structure
 * Carry any kind of data
+* No circular check
+
+### How much data size is reduced
+
+It's all depend on your data. If you have long unnecessary field names, big object storing arrays, you can reduce the size %30. Average is %50. But JSON is well optimized code. MYSON could be 5 times slower. Native implementation probably work best.
 
 ### Details
 
@@ -166,6 +173,12 @@ const binary = MYSON.binarify(new Person('me', 'you', 1, false)); // <Buffer 07 
 // type = number (4), value = 1 => \x14
 // type = boolean (3), value = false => \x03
 ```
+
+
+> **Note:** First parameter of learn is id. id is a 32 bit value but stored as flag. This help you to create zero-cost custom class. If you use big id's myson look for couple bytes to understand object's identity. All custom id's should be known between clients. Thats why I didn't make an automatic id creator for this.
+> ```ts
+> MYSON.learn(12345678, Person, 'name'); 
+> ```
 
 ### Custom rules
 
