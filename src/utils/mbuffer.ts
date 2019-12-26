@@ -19,7 +19,7 @@ export class MBuffer {
     return this.buf.readUInt8(this.index + relative);
   }
 
-  getFlags(): number {
+  deflag(): number {
     return Deflagger(this);
   }
 }

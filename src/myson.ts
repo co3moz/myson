@@ -1,18 +1,13 @@
 import { MBuffer } from "./utils/mbuffer";
 import { Rule } from "./utils/rule";
-import { helpers } from "./utils/helpers";
+import { Constructor } from "./utils/constructor";
+import { learn } from "./utils/custom";
 
+const rules = new Map<number, Rule>();
+let unique = 0;
 export class MYSON {
-  private static rules = new Map<number, Rule>();
-  private static lastUnique = 0;
-  private static ruleSize = 0;
-  private static ruleBitsize = 0;
-  private static ruleMask = 0;
-  
-  static helpers = helpers;
-
   static binarify(obj: any) {
-    for (let rule of this.rules.values()) {
+    for (let rule of rules.values()) {
       if (rule.matchObject(obj))
         return rule.toMYSON(obj).finish(rule);
     }
@@ -24,30 +19,24 @@ export class MYSON {
     return this.parseEntity(MBuffer.from(buf));
   }
 
-  static getBitsize() {
-    return MYSON.ruleBitsize;
+  static learn<T>(id: number, klass: Constructor<T>, ...fields: (keyof T)[]) {
+    learn(id, klass, fields);
   }
-
-  static updateRuleSize(value: number) {
-    this.ruleSize = value - 1;
-    this.ruleBitsize = this.ruleSize.toString(2).length;
-    this.ruleMask = (1 << this.ruleBitsize) - 1;
-  }
-
-  static nextUnique() { return this.lastUnique++ }
 
   static parseEntity(buf: MBuffer) {
-    let flags = buf.getFlags();
-    const type = flags & this.ruleMask;
-    flags = flags >>> this.ruleBitsize;
-    let rule = this.rules.get(type);
+    let flags = buf.deflag();
+    const type = flags & 0b1111;
+    flags = flags >>> 4;
+    let rule = rules.get(type);
     return rule.fromMYSON(buf, flags)
   }
 
   static addRule(rule: Rule) {
-    if (this.rules.size > this.ruleSize) throw new Error('Rule size limit reached!');
-    this.rules.set(rule.unique, rule);
+    if (rules.size > 15) throw new Error('Rule limit reached!');
+    rules.set(rule.unique, rule);
+  }
+
+  static nextUnique() {
+    return unique++;
   }
 }
-
-MYSON.updateRuleSize(16);

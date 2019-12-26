@@ -29,7 +29,7 @@ MYSON.addRule({
     if (flag == 5) return NaN;
 
     if (flag == 6) {
-      return buf.getFlags();
+      return buf.deflag();
     }
 
     if (flag == 7) return buf.slice(8).readDoubleBE(0);

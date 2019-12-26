@@ -5,6 +5,7 @@ import "./providers/boolean";
 import "./providers/number";
 import "./providers/object";
 import "./providers/buffer";
+import "./providers/custom";
 
 export * from "./myson";
 export * from "./utils/flagger";

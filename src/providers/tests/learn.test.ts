@@ -19,11 +19,9 @@ export class CollectionTest {
       }
     }
 
-    MYSON.helpers.learnCollection([
-      [Car, 'brand', 'color'],
-      [Color, 'tone'],
-      [Red, 'tone']
-    ]);
+    MYSON.learn(0, Car, 'brand', 'color');
+    MYSON.learn(1, Color, 'tone');
+    MYSON.learn(2, Red, 'tone');
 
     let data = new Car('toyota', new Red());
     let binary = MYSON.binarify(data);

@@ -7,7 +7,11 @@ MYSON.addRule({
     return data.constructor == Array;
   },
   toMYSON(data: any[]) {
-    return MResult.from(data.length, Buffer.concat(data.map(d => MYSON.binarify(d))));
+    let bufarr = [];
+    for (let i = 0; i < data.length; i++) {
+      bufarr.push(MYSON.binarify(data[i]));
+    }
+    return MResult.from(data.length, Buffer.concat(bufarr));
   },
   fromMYSON(buf: MBuffer, len: number): any[] {
     return Array(len).fill(0).map(x => MYSON.parseEntity(buf));
