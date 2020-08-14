@@ -13,7 +13,7 @@ class CustomType {
 
 export class CustomTypeTest {
   @Spec()
-  manual_define() {
+  add_rule() {
     MYSON.addRule({
       unique: MYSON.nextUnique(),
       matchObject(data: any) {
@@ -32,7 +32,7 @@ export class CustomTypeTest {
   }
 
   @Spec()
-  case1() {
+  test_rule() {
     let myType = new CustomType();
     myType.fieldA = 'hello';
     myType.fieldB = 'world';

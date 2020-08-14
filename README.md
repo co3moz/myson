@@ -27,7 +27,11 @@ const text = MYSON.parse(binary); // "Hello, world!"
 
 ### How much data size is reduced
 
-It's all depend on your data. If you have long unnecessary field names, big object storing arrays, you can reduce the size %30. Average is %50. But JSON is well optimized code. MYSON could be 5 times slower. Native implementation probably work best.
+It's all depend on your data. If you have long unnecessary field names, big object storing arrays, you can reduce the size %30. Average is %50. But JSON is well optimized code. MYSON could be 5 times slower. Native implementation would work best.
+
+* 73357 objects with 5 keys each with repetive data. JSON: 8.6mb MYSON 4.3mb `{A, B, C, D, E}[]`
+* same objects but mapped with 4-level keyed: JSON: 2.2mb, MYSON: 1.9mb `{A: {B: C: { D: E}}}`
+
 
 ### Details
 
@@ -162,7 +166,7 @@ const binary = MYSON.binarify(new Person('name', 'surname', 1, false)); // throw
 Person won't be considered as regular old objects, thats why it says unsupported but that's what we planned.
 
 ```ts
-MYSON.learn(0, Person, 'name', 'surname', 'age', 'isOkay'); 
+MYSON.learn(0, Person, ['name', 'surname', 'age', 'isOkay']); 
 
 const binary = MYSON.binarify(new Person('me', 'you', 1, false)); // <Buffer 07 21 6d 65 31 79 6f 75 14 03>
 // type = Custom (7), class_id = 0 => \07
@@ -175,9 +179,9 @@ const binary = MYSON.binarify(new Person('me', 'you', 1, false)); // <Buffer 07 
 ```
 
 
-> **Note:** First parameter of learn is id. id is a 32 bit value but stored as flag. This help you to create zero-cost custom class. If you use big id's myson look for couple bytes to understand object's identity. All custom id's should be known between clients. Thats why I didn't make an automatic id creator for this.
+> **Note:** First parameter of learn is id. id is a 32 bit value but stored as flag. This help you to create zero-cost custom class. If you use big ids myson look for couple bytes to understand object's identity. All custom id's should be known between clients. Thats why I didn't make an automatic id creator for this.
 > ```ts
-> MYSON.learn(12345678, Person, 'name'); 
+> MYSON.learn(12345678, Person, ['name']); 
 > ```
 
 ### Custom rules

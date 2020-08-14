@@ -15,11 +15,11 @@ export class MYSON {
     throw new Error('Unsupported type');
   }
 
-  static parse(buf: Buffer): any {
+  static parse<T>(buf: Buffer): T {
     return this.parseEntity(MBuffer.from(buf));
   }
 
-  static learn<T>(id: number, klass: Constructor<T>, ...fields: (keyof T)[]) {
+  static learn<T>(id: number, klass: Constructor<T>, fields: (keyof T)[]) {
     learn(id, klass, fields);
   }
 
