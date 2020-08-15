@@ -1,12 +1,12 @@
 import { MYSON } from "../myson";
 import { MResult, MBuffer } from "..";
 
-MYSON.addRule({
-  unique: MYSON.nextUnique(),
-  matchObject(data: any) {
+MYSON.addRule<string>({
+  unique: 1,
+  matchObject(data) {
     return data.constructor == String;
   },
-  toMYSON(data: string) {
+  toMYSON(data) {
     return MResult.from(data.length, Buffer.from(data));
   },
   fromMYSON(buf: MBuffer, flags: number): string {

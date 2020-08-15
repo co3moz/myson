@@ -1,8 +1,8 @@
 import { Spec } from 'nole';
 import { MYSON } from "../../myson";
-import { inspect } from 'util'
 import { MBuffer } from '../..';
 import { MResult } from '../../utils/mresult';
+import { assert } from '../../utils/assert';
 
 class CustomType {
   fieldA: string
@@ -13,17 +13,20 @@ class CustomType {
 
 export class CustomTypeTest {
   @Spec()
-  add_rule() {
+  addRule() {
     MYSON.addRule({
-      unique: MYSON.nextUnique(),
+      unique: 15,
       matchObject(data: any) {
         return data.constructor == CustomType;
       },
       toMYSON(data: CustomType) {
-        return MResult.from(0, Buffer.concat([MYSON.binarify(data.fieldA), MYSON.binarify(data.fieldB)]));
+        return MResult.from(0, Buffer.concat([
+          MYSON.binarify(data.fieldA),
+          MYSON.binarify(data.fieldB)
+        ]));
       },
       fromMYSON(buf: MBuffer, flag: number): CustomType {
-        const ct  = new CustomType();
+        const ct = new CustomType();
         ct.fieldA = MYSON.parseEntity(buf);
         ct.fieldB = MYSON.parseEntity(buf);
         return ct;
@@ -32,16 +35,11 @@ export class CustomTypeTest {
   }
 
   @Spec()
-  test_rule() {
+  testType() {
     let myType = new CustomType();
     myType.fieldA = 'hello';
     myType.fieldB = 'world';
 
-    let binary = MYSON.binarify(myType);
-    console.log(JSON.stringify(myType).length, binary.length, binary);
-    let result = MYSON.parse(binary);
-    if (JSON.stringify(myType) != JSON.stringify(result)) {
-      throw new Error('not expected! ' + inspect(result));
-    }
+    assert(myType);
   }
 }

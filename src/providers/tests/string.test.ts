@@ -1,13 +1,13 @@
 import { Spec } from 'nole';
-import { MYSON } from '../..';
+import { assertAll } from '../../utils/assert';
 
 export class StringTest {
   @Spec()
-  case1() {
-    let binary = MYSON.binarify("hello");
-    console.log(binary);
-    if (MYSON.parse(binary) != "hello") {
-      throw new Error('not expected!');
-    }
+  spec() {
+    assertAll([
+      '',
+      'hello',
+      'long'.repeat(1000)
+    ]);
   }
 }

@@ -5,7 +5,8 @@ import "./providers/boolean";
 import "./providers/number";
 import "./providers/object";
 import "./providers/buffer";
-import "./providers/custom";
+import "./providers/tuple";
+export { TupleArray as ObjectArray } from "./providers/tuple-array";
 
 export * from "./myson";
 export * from "./utils/flagger";

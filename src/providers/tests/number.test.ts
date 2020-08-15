@@ -1,43 +1,28 @@
 import { Spec } from 'nole';
-import { MYSON } from '../..';
-import {inspect} from 'util'
+import { assertAll } from '../../utils/assert';
+import { NumberSerializationOptions } from '../../utils/rule';
 
 export class NumberTest {
+  testData = [
+    1,
+    15,
+    11245,
+    1112351235.245
+  ];
+
   @Spec()
-  case1() {
-    let binary = MYSON.binarify(1);
-    console.log(binary);
-    if (MYSON.parse(binary) != 1) {
-      throw new Error('not expected!');
-    }
+  spec() {
+    assertAll(this.testData);
   }
 
   @Spec()
-  case2() {
-    let binary = MYSON.binarify(15);
-    console.log(binary);
-    let result = MYSON.parse(binary);
-    if (result != 15) {
-      throw new Error('not expected! ' + inspect(result));
-    }
+  noFlagger() {
+    assertAll(this.testData, { numbers: NumberSerializationOptions.noFlagger });
   }
-
+  
   @Spec()
-  case3() {
-    let binary = MYSON.binarify(11245);
-    console.log(binary);
-    let result = MYSON.parse(binary);
-    if (result != 11245) {
-      throw new Error('not expected! ' + inspect(result));
-    }
+  alwaysDouble() {
+    assertAll(this.testData, { numbers: NumberSerializationOptions.alwaysDouble });
   }
-
-  @Spec()
-  case4() {
-    let binary = MYSON.binarify(1112351235.245);
-    console.log(binary);
-    if (MYSON.parse(binary) != 1112351235.245) {
-      throw new Error('not expected!');
-    }
-  }
+  
 }

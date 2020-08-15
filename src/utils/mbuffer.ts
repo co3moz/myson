@@ -7,7 +7,7 @@ export class MBuffer {
     return new MBuffer(buf);
   }
 
-  get(): number {
+  next(): number {
     return this.buf.readUInt8(this.index++);
   }
 

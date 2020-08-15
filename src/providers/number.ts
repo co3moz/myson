@@ -1,20 +1,28 @@
 import { MYSON } from "../myson";
-import { MResult, Flagger, MBuffer } from "..";
+import { MResult } from "../utils/mresult";
+import { Flagger } from "../utils/flagger";
+import { SerializationOptions, NumberSerializationOptions } from "../utils/rule";
+import { MBuffer } from "../utils/mbuffer";
 
-MYSON.addRule({
-  unique: MYSON.nextUnique(),
-  matchObject(data: any) {
+MYSON.addRule<number>({
+  unique: 4,
+  matchObject(data) {
     return data.constructor == Number
   },
-  toMYSON(data: number) {
-    if (isNaN(data)) return MResult.from(5);
+  toMYSON(data, opts?: SerializationOptions) {
+    const behaviour = opts?.numbers;
 
-    if ((data >>> 0) == data) {
-      if (data <= 4) {
-        return MResult.from(data);
+    if (behaviour != NumberSerializationOptions.alwaysDouble) {
+      if (isNaN(data)) return MResult.from(5);
+      if ((data >>> 0) == data) {
+        if (data <= 4) {
+          return MResult.from(data);
+        }
+
+        if (behaviour != NumberSerializationOptions.noFlagger) {
+          return MResult.from(6, Flagger(data));
+        }
       }
-
-      return MResult.from(6, Flagger(data));
     }
 
     let buf = Buffer.alloc(8);

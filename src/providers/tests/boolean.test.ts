@@ -1,13 +1,12 @@
 import { Spec } from 'nole';
-import { MYSON } from '../..';
+import { assertAll } from '../../utils/assert';
 
 export class BooleanTest {
   @Spec()
-  case1() {
-    let binary = MYSON.binarify(true);
-    console.log(binary);
-    if (MYSON.parse(binary) != true) {
-      throw new Error('not expected!');
-    }
+  spec() {
+    assertAll([
+      true,
+      false
+    ]);
   }
 }

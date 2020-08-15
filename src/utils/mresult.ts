@@ -1,6 +1,5 @@
 import { Flagger } from "./flagger";
 import { Rule } from "./rule";
-import { MYSON } from "../myson";
 
 export class MResult {
   private constructor(public flags: number, public buf: Buffer) { }

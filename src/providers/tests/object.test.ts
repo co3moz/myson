@@ -1,16 +1,18 @@
 import { Spec } from 'nole';
-import { MYSON } from '../..';
-import { inspect } from 'util'
+import { assertAll } from '../../utils/assert';
 
 export class ObjectTest {
   @Spec()
-  case1() {
-    let obj = { hello: "world" }
-    let binary = MYSON.binarify(obj);
-    console.log(binary);
-    let result = MYSON.parse(binary);
-    if (JSON.stringify(obj) != JSON.stringify(result)) {
-      throw new Error('not expected! ' + inspect(result));
-    }
+  spec() {
+    assertAll([
+      {},
+      { hello: "world" },
+      { "hello world": true },
+      { "multiple": 1, "keys": 2 },
+      Array(1000).fill(0).reduce((x, i) => {
+        x[i] = 'lots of keys';
+        return x;
+      }, {})
+    ]);
   }
 }

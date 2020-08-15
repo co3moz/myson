@@ -5,10 +5,11 @@ const DATA_FLAG = 0b0111_1111;
 export function Flagger(value: number): Buffer {
   const arr = []
 
-  for (; ;) {
+  while (true) {
     let segment = value & DATA_FLAG;
     value = value >>> 7;
     arr.unshift(segment);
+
     if (!value) {
       for (let i = 0; i < arr.length - 1; i++) {
         arr[i] |= NEXT_FLAG;
@@ -20,8 +21,8 @@ export function Flagger(value: number): Buffer {
 
 export function Deflagger(buffer: MBuffer) {
   let data = 0;
-  for (; ;) {
-    let segment = buffer.get();
+  while (true) {
+    let segment = buffer.next();
     data <<= 7;
     if (segment & NEXT_FLAG) {
       data |= (segment & DATA_FLAG);
